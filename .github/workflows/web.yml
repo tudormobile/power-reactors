@@ -1,0 +1,63 @@
+name: Vue App
+
+on:
+  workflow_dispatch:
+  pull_request:
+    branches: [ main ]
+  push:
+    branches: [ main ]
+
+jobs:
+  build:
+    name: Build on Ubuntu
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+      
+    - name: Setup Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: '22.x'
+        cache: 'npm'
+        cache-dependency-path: package-lock.json
+        
+    - name: Install dependencies
+      run: npm ci
+      
+    - name: Build app
+      run: npm run build
+
+    - name: Create zip archive
+      run: |
+        cd dist
+        zip -r ../power-reactors-dist.zip .
+        
+    - name: Upload dist artifact
+      uses: actions/upload-artifact@v4
+      with:
+        name: power-reactors-dist
+        path: power-reactors-dist.zip
+        retention-days: 30
+
+    - name: Get version
+      id: vars
+      run: |
+        echo "webreleasever=$(jq -r '.version' package.json)" >> $GITHUB_OUTPUT
+    - name: Test output
+      run: echo ${{ steps.vars.outputs.webreleasever }}    
+    - name: Create release
+      run: 
+        echo `pwd`
+        echo "Evaluating to create release v${{ steps.vars.outputs.webreleasever }}"
+    - name: Create release
+      if: ${{ github.event_name == 'push' }}
+      env:
+        GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      run: |
+        echo "Creating release v${{ steps.vars.outputs.webreleasever }}"
+        echo `pwd`
+        echo "Creating release"
+        echo gh release create --generate-notes v${{ steps.vars.outputs.webreleasever }} power-reactors-dist.zip
+        gh release create -t ${{ steps.vars.outputs.webreleasever }} --generate-notes v${{ steps.vars.outputs.webreleasever }} power-reactors-dist.zip#package
