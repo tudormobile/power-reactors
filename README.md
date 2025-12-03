@@ -1,5 +1,5 @@
 # power-reactors
-US commercial nuclear power reactors
+US commercial nuclear power reactors.
 
 [![Web App Build & Release](https://github.com/tudormobile/power-reactors/actions/workflows/web.yml/badge.svg)](https://github.com/tudormobile/power-reactors/actions/workflows/web.yml)
 
@@ -19,7 +19,7 @@ npm run dev
 
 The build and release values are automatically adjusted when running a build. See the script *prebuild.js* in the *scripts/* folder for details.
 
-- Run the build.
+- Build the app.
 ```sh
 npm run build
 ```
