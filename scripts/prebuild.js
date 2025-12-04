@@ -12,3 +12,12 @@ console.log(`Computed package version: ${version}`);
 packageJson.version = version;
 writeFileSync(packageJsonPath, JSON.stringify(packageJson, null, 2) + '\n', 'utf-8');
 console.log(`Updated package.json with version: ${version}`);
+
+const indexHtmlPath = './index.html';
+const indexHtml = readFileSync(indexHtmlPath, 'utf-8');
+const updatedIndexHtml = indexHtml.replace(
+  /<!-- Version Code .+ -->/,
+  `<!-- Version Code ${version} -->`
+);
+writeFileSync(indexHtmlPath, updatedIndexHtml, 'utf-8');
+console.log(`Updated index.html with version: ${version}`);

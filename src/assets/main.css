@@ -13,9 +13,10 @@
 /* Colors */
 :root {
     --color-text: #000000;
-    --color-text-secondary: #d9d9d9;
+    --color-text-secondary: #898989;
     --color-background: #f9f9f9;
     --color-background-secondary: #eeeeee;
+    --color-text-accent:var(--color-power-reactors-darker);
     /* Navigation Colors */
     --color-navigation-background: var(--color-power-reactors-extralight);
     --color-navigation-border: var(--color-power-reactors-light);
@@ -42,6 +43,7 @@
         --color-text-secondary: #b0c0d0;
         --color-background: #2c2c2c;
         --color-background-secondary: #121212;
+        --color-text-accent: var(--color-power-reactors-alert);
         /* Navigation Colors */
         --color-navigation-background: var(--color-power-reactors-dark);
         --color-navigation-border: var(--color-power-reactors-border);

@@ -1,0 +1,14 @@
+{
+    "appName": "Power Reactors",
+    "tudorzone": "https://api.tudorzone.com/",
+    "client": "power-reactors",
+    "serviceId": "F59E29A2B2DDFF0834719C5346646AA7",
+    "data": "rss/json",
+    "nrcApiBaseUrl": "https://www.nrc.gov/",
+    "statusRssUrl": "https://www.nrc.gov/public-involve/rss?feed=plant-status",
+    "newsRssUrl": "https://www.nrc.gov/public-involve/rss?feed=news",
+    "dev": {
+        "apikey_example": "00000000000000000000000000000000",
+        "tudorzone_example": "https://localhost:7248/"
+    }
+}
