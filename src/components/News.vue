@@ -37,7 +37,8 @@ onMounted(async () => {
             <li v-for="(item, index) in newsItems" :key="index">
                 <div class="item-title">
                     <img src="@/assets/icons/news-icon.svg" width="24" alt="News" />
-                    <a :href="item.link" target="_blank" rel="noopener">{{ item.title }}</a>
+                    <a v-if="item.link" :href="item.link" target="_blank" rel="noopener"><span class="item-link">{{ item.title }}</span><span class="link-symbol">&#x1F517;</span></a>
+                    <span v-else>{{ item.title }}</span>
                 </div>
                 <div class="item-footer">{{ item.pubDate }}</div>
             </li>
@@ -47,7 +48,7 @@ onMounted(async () => {
 <style scoped>
 .news-page {
     display: flex;
-    flex-direction: column;
+    flex-direction: column; 
     align-items: center;
     justify-content: center;
 }
@@ -55,6 +56,19 @@ onMounted(async () => {
     display: flex;
     align-items: flex-start;
     gap: 8px;
+}
+.item-link {
+    text-decoration: underline;
+    color: inherit;
+}
+.link-symbol {
+    margin-left: 4px;
+    font-size: 0.8em;
+}
+@media (prefers-color-scheme: dark) {
+    .item-title img {
+        filter: invert(97%) sepia(2%) saturate(4393%) hue-rotate(181deg) brightness(107%) contrast(91%);
+    }
 }
 .item-footer {
     font-size: 0.8em;
