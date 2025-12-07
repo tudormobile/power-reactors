@@ -80,7 +80,6 @@ function statusColor(p) {
     }
 };
 function showStation(link) {
-    console.log("Opening link:", link);
     if (link != undefined && link != null && link.length > 0) {
         window.open(link, '_blank');
     }
