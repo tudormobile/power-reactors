@@ -1,5 +1,5 @@
 <script setup>
-import { ref, onMounted, computed} from 'vue';
+import { ref, onMounted, computed } from 'vue';
 
 import config from '@/assets/config.json';
 import plants from '@/assets/plants.json';
@@ -13,6 +13,7 @@ const serviceUrl = process.env.NODE_ENV === 'development'
     : config.tudorzone + config.data;
 
 let stations = ref(plants);
+let lastUpdated = ref(null);
 
 onMounted(async () => {
     fetch(serviceUrl, {
@@ -39,7 +40,6 @@ onMounted(async () => {
 });
 
 function processData(data) {
-    console.log("Fetched data:", data);
     let updatedStations = stations.value.map((station) => {
         let updatedStation = { ...station };
         let stationData = data.items.find((item) => item.title.startsWith(station.Name));
@@ -51,6 +51,16 @@ function processData(data) {
         return updatedStation;
     });
     stations.value = updatedStations;
+    
+    // Convert ISO date to local date/time without seconds
+    const date = new Date(data.pubDate);
+    lastUpdated.value = date.toLocaleString(undefined, {
+        year: 'numeric',
+        month: 'short',
+        day: 'numeric',
+        hour: '2-digit',
+        minute: '2-digit'
+    });
 }
 
 function statusColor(p) {
@@ -69,6 +79,7 @@ function statusColor(p) {
 
 <template>
     <div class="plants-page">
+        <div class="last-updated">{{ lastUpdated }}</div>
         <ul>
             <li v-for="station in stations" :key="station.Name">
                 <div class="plant-item">
@@ -76,10 +87,11 @@ function statusColor(p) {
                         <img :src="`${config.nrcApiBaseUrl}${station.Image}`" :alt="station.Name" />
                         <div class="plant-details">
                             <span class="plant-status">
-                                <img :src="`${statusColor(station.Status)}`"/>
+                                <img :src="`${statusColor(station.Status)}`" />
                                 <h1>{{ station.Name }}</h1>
                             </span>
-                            <span class="plant-status-power" v-if="station.Status !== undefined">{{ station.Status }}% Power</span>
+                            <span class="plant-status-power" v-if="station.Status !== undefined">{{ station.Status }}%
+                                Power</span>
                         </div>
                     </div>
                     <div v-for="(tag, key) in station.Tags" :key="key">
@@ -92,6 +104,17 @@ function statusColor(p) {
 </template>
 
 <style scoped>
+.last-updated {
+    font-size: 0.8em;
+    color: var(--color-text-secondary);
+    position: fixed;
+    top: 30px;
+    left: 4px;
+    right: 4px;
+    z-index: 1000;
+    text-align: right;
+}
+
 .plants-page {
     padding: 0.25em 0em;
 }
@@ -132,6 +155,7 @@ function statusColor(p) {
     margin-right: 0.5em;
     font-size: 0.8em;
 }
+
 .tag-value {
     font-size: 0.8em;
 }
@@ -147,11 +171,10 @@ function statusColor(p) {
 .plant-status img {
     filter: none;
 }
+
 .plant-status-power {
     font-size: 0.8em;
     font-weight: 600;
     color: var(--color-text-accent);
 }
-
-
 </style>

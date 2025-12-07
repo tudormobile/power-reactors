@@ -25,7 +25,6 @@ onMounted(async () => {
         }
     }).then((data) => {
         newsItems.value = data.items;
-        console.log("Fetched news items:", newsItems.value);
     }).catch((error) => {
         console.error("Error fetching data:", error);
     });
