@@ -15,6 +15,9 @@ const serviceUrl = process.env.NODE_ENV === 'development'
 let stations = ref(plants);
 let lastUpdated = ref(null);
 
+// Plant links: https://www.nrc.gov/info-finder/reactors/ano1.html
+
+
 onMounted(async () => {
     fetch(serviceUrl, {
         headers: {
@@ -47,6 +50,7 @@ function processData(data) {
             let powerMatch = stationData.title.match(/- (\d+)% power/i);
             let power = powerMatch ? powerMatch[1] : null;
             updatedStation.Status = power;
+            updatedStation.link = stationData.link.replace('/reactors/', '/info-finder/reactors/');
         }
         return updatedStation;
     });
@@ -75,6 +79,12 @@ function statusColor(p) {
         return plantsIconYellow;
     }
 };
+function showStation(link) {
+    console.log("Opening link:", link);
+    if (link != undefined && link != null && link.length > 0) {
+        window.open(link, '_blank');
+    }
+}
 </script>
 
 <template>
@@ -83,7 +93,7 @@ function statusColor(p) {
         <ul>
             <li v-for="station in stations" :key="station.Name">
                 <div class="plant-item">
-                    <div class="plant-item-title">
+                    <div class="plant-item-title" @click="showStation(station.link)">
                         <img :src="`${config.nrcApiBaseUrl}${station.Image}`" :alt="station.Name" />
                         <div class="plant-details">
                             <span class="plant-status">
@@ -126,6 +136,7 @@ function statusColor(p) {
 .plant-item-title {
     display: flex;
     flex-direction: row;
+    cursor: pointer;
 }
 
 .plant-item img {
