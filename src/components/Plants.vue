@@ -88,7 +88,7 @@ function showStation(link) {
 
 <template>
     <div class="plants-page">
-        <div class="last-updated">{{ lastUpdated }}</div>
+        <div class="last-updated" v-if="lastUpdated">{{ lastUpdated }}</div>
         <ul>
             <li v-for="station in stations" :key="station.Name">
                 <div class="plant-item">
