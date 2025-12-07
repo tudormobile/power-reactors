@@ -80,7 +80,7 @@ function statusColor(p) {
     }
 };
 function showStation(link) {
-    if (link != undefined && link != null && link.length > 0) {
+    if (link && link.length > 0) {
         window.open(link, '_blank');
     }
 }
